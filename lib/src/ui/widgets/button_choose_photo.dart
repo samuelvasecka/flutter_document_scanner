@@ -17,12 +17,12 @@ class ButtonChoosePhoto extends StatelessWidget {
     }
 
     return Positioned(
-      bottom: 40,
+      bottom: 35,
       left: 0,
       right: 0,
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.only(left: 120),
+          padding: const EdgeInsets.only(left: 135),
           child: Material(
             borderRadius: BorderRadius.circular(50),
             color: Colors.black.withOpacity(0.3),

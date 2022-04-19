@@ -40,9 +40,6 @@ class DocumentScanner extends StatelessWidget {
   final EditPhotoDocumentStyle editPhotoDocumentStyle;
 
   ///
-  final bool useGallery;
-
-  ///
   final OnSave onSave;
 
   const DocumentScanner({
@@ -55,7 +52,6 @@ class DocumentScanner extends StatelessWidget {
     this.takePhotoDocumentStyle = const TakePhotoDocumentStyle(),
     this.cropPhotoDocumentStyle = const CropPhotoDocumentStyle(),
     this.editPhotoDocumentStyle = const EditPhotoDocumentStyle(),
-    this.useGallery = false,
     required this.onSave,
   }) : super(key: key);
 
@@ -174,13 +170,11 @@ class _View extends StatelessWidget {
   final TakePhotoDocumentStyle takePhotoDocumentStyle;
   final CropPhotoDocumentStyle cropPhotoDocumentStyle;
   final EditPhotoDocumentStyle editPhotoDocumentStyle;
-  final bool useGallery;
   final OnSave onSave;
 
   const _View({
     Key? key,
     this.pageTransitionBuilder,
-    this.useGallery = false,
     required this.takePhotoDocumentStyle,
     required this.cropPhotoDocumentStyle,
     required this.editPhotoDocumentStyle,
@@ -198,9 +192,6 @@ class _View extends StatelessWidget {
 
         switch (state) {
           case AppPages.takePhoto:
-            if (useGallery) {
-              context.read<DocumentScannerController>().choosePhoto();
-            }
             page = TakePhotoDocumentPage(
               takePhotoDocumentStyle: takePhotoDocumentStyle,
             );

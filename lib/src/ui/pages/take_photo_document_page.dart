@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_document_scanner/src/bloc/app/app_bloc.dart';
 import 'package:flutter_document_scanner/src/bloc/app/app_state.dart';
+import 'package:flutter_document_scanner/src/ui/widgets/button_choose_photo.dart';
 import 'package:flutter_document_scanner/src/ui/widgets/button_take_photo.dart';
 import 'package:flutter_document_scanner/src/utils/take_photo_document_style.dart';
 
@@ -78,6 +79,7 @@ class _CameraPreview extends StatelessWidget {
 
             /// Default
             const ButtonTakePhoto(),
+            const ButtonChoosePhoto(),
           ],
         );
       },

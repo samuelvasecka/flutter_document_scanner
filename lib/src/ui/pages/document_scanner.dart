@@ -40,6 +40,9 @@ class DocumentScanner extends StatelessWidget {
   final EditPhotoDocumentStyle editPhotoDocumentStyle;
 
   ///
+  final bool useGallery;
+
+  ///
   final OnSave onSave;
 
   const DocumentScanner({
@@ -52,6 +55,7 @@ class DocumentScanner extends StatelessWidget {
     this.takePhotoDocumentStyle = const TakePhotoDocumentStyle(),
     this.cropPhotoDocumentStyle = const CropPhotoDocumentStyle(),
     this.editPhotoDocumentStyle = const EditPhotoDocumentStyle(),
+    this.useGallery = false,
     required this.onSave,
   }) : super(key: key);
 
@@ -84,7 +88,8 @@ class DocumentScanner extends StatelessWidget {
                 if (generalStyles.hideDefaultDialogs) return;
 
                 if (state.statusTakePhotoPage == AppStatus.loading) {
-                  dialogs.defaultDialog(context, "Taking picture");
+                  dialogs.defaultDialog(
+                      context, "Prebieha načítanie fotografie");
                 }
 
                 if (state.statusTakePhotoPage == AppStatus.success) {
@@ -101,7 +106,7 @@ class DocumentScanner extends StatelessWidget {
                 if (generalStyles.hideDefaultDialogs) return;
 
                 if (state.statusCropPhoto == AppStatus.loading) {
-                  dialogs.defaultDialog(context, "Cropping picture");
+                  dialogs.defaultDialog(context, "Orezávanie obrázku");
                 }
 
                 if (state.statusCropPhoto == AppStatus.success) {
@@ -118,7 +123,7 @@ class DocumentScanner extends StatelessWidget {
                 if (generalStyles.hideDefaultDialogs) return;
 
                 if (state.statusEditPhoto == AppStatus.loading) {
-                  dialogs.defaultDialog(context, "Editting picture");
+                  dialogs.defaultDialog(context, "Editácia obrázku");
                 }
 
                 if (state.statusEditPhoto == AppStatus.success) {
@@ -132,16 +137,18 @@ class DocumentScanner extends StatelessWidget {
               listenWhen: (previous, current) =>
                   current.statusSavePhotoDocument !=
                   previous.statusSavePhotoDocument,
-              listener: (context, state) {
+              listener: (context, state) async {
                 if (generalStyles.hideDefaultDialogs) return;
 
                 if (state.statusSavePhotoDocument == AppStatus.loading) {
-                  dialogs.defaultDialog(context, "Saving Document");
+                  dialogs.defaultDialog(context, "Ukladanie dokumnetu");
                 }
 
                 if (state.statusSavePhotoDocument == AppStatus.success) {
                   Navigator.pop(context);
-                  dialogs.defaultDialog(context, "Saved Document");
+                  dialogs.defaultDialog(context, "Dokument uložený");
+                  await Future.delayed(const Duration(milliseconds: 300));
+                  Navigator.pop(context);
                 }
               },
             ),
@@ -167,11 +174,13 @@ class _View extends StatelessWidget {
   final TakePhotoDocumentStyle takePhotoDocumentStyle;
   final CropPhotoDocumentStyle cropPhotoDocumentStyle;
   final EditPhotoDocumentStyle editPhotoDocumentStyle;
+  final bool useGallery;
   final OnSave onSave;
 
   const _View({
     Key? key,
     this.pageTransitionBuilder,
+    this.useGallery = false,
     required this.takePhotoDocumentStyle,
     required this.cropPhotoDocumentStyle,
     required this.editPhotoDocumentStyle,
@@ -189,6 +198,9 @@ class _View extends StatelessWidget {
 
         switch (state) {
           case AppPages.takePhoto:
+            if (useGallery) {
+              context.read<DocumentScannerController>().choosePhoto();
+            }
             page = TakePhotoDocumentPage(
               takePhotoDocumentStyle: takePhotoDocumentStyle,
             );

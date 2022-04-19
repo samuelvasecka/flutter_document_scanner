@@ -37,6 +37,19 @@ class AppPhotoTaken extends AppEvent {
       ];
 }
 
+class AppPhotoChosen extends AppEvent {
+  final double? minContourArea;
+
+  AppPhotoChosen({
+    this.minContourArea,
+  });
+
+  @override
+  List<Object?> get props => [
+        minContourArea,
+      ];
+}
+
 class AppPageChanged extends AppEvent {
   final AppPages newPage;
 

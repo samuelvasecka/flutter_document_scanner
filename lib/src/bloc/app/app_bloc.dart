@@ -3,8 +3,10 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter_document_scanner/flutter_document_scanner.dart';
 import 'package:flutter_document_scanner/src/models/filter_type.dart';
 import 'package:flutter_document_scanner/src/utils/image_utils.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'app_event.dart';
 import 'app_state.dart';
@@ -18,6 +20,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         super(AppState.init()) {
     on<AppCameraInitialized>(_cameraInitialized);
     on<AppPhotoTaken>(_photoTaken);
+    on<AppPhotoChosen>(_photoChosen);
     on<AppPageChanged>(_pageChanged);
     on<AppPhotoCropped>(_photoCropped);
     on<AppLoadCroppedPhoto>(_loadCroppedPhoto);
@@ -56,6 +59,37 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     emit(state.copyWith(
       statusCamera: AppStatus.success,
       cameraController: _cameraController,
+    ));
+  }
+
+  ///
+  Future<void> _photoChosen(
+    AppPhotoChosen event,
+    Emitter<AppState> emit,
+  ) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    File fileImage;
+
+    if (pickedFile != null) {
+      fileImage = File(pickedFile.path);
+    } else {
+      return;
+    }
+
+    final byteData = await fileImage.readAsBytes();
+    final response = await _imageUtils.findContourPhoto(
+      byteData,
+      minContourArea: event.minContourArea,
+    );
+
+    emit(state.copyWith(
+      pictureInitial: fileImage,
+      contourInitial: response,
+    ));
+
+    emit(state.copyWith(
+      currentPage: AppPages.cropPhoto,
     ));
   }
 

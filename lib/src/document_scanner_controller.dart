@@ -67,6 +67,14 @@ class DocumentScannerController {
     ));
   }
 
+  Future<void> choosePhoto({
+    double? minContourArea,
+  }) async {
+    _appBloc.add(AppPhotoChosen(
+      minContourArea: minContourArea,
+    ));
+  }
+
   ///
   Future<void> changePage(AppPages page) async {
     _appBloc.add(AppPageChanged(page));

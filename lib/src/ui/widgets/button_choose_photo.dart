@@ -17,16 +17,25 @@ class ButtonChoosePhoto extends StatelessWidget {
     }
 
     return Positioned(
-      bottom: 20,
+      bottom: 30,
       left: 0,
       right: 0,
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.only(left: 86),
-          child: IconButton(
-              onPressed: () =>
-                  context.read<DocumentScannerController>().choosePhoto(),
-              icon: const Icon(Icons.image)),
+          padding: const EdgeInsets.only(left: 100),
+          child: Material(
+            borderRadius: BorderRadius.circular(50),
+            color: Colors.black.withOpacity(0.3),
+            elevation: 0,
+            child: IconButton(
+                onPressed: () =>
+                    context.read<DocumentScannerController>().choosePhoto(),
+                icon: const Icon(
+                  Icons.image,
+                  size: 35,
+                  color: Colors.white,
+                )),
+          ),
         ),
       ),
     );
